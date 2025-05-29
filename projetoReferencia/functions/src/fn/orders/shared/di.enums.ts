@@ -1,0 +1,25 @@
+export const Locator = {
+  OrdersRepository: Symbol.for('OrdersRepository'),
+  OrdersUseCase: Symbol.for('OrdersUseCase'),
+  GetOneOrderHttp: Symbol.for('GetOneOrderHttp'),
+  CancelExpiredOrderHttp: Symbol.for('CancelExpiredOrderHttp'),
+  PublishOrderExternal: Symbol.for('PublishOrderExternal'),
+  OrderUpdateNotificationExternal: Symbol.for(
+    'OrderUpdateNotificationExternal',
+  ),
+  CollaboratorUpdateNotificationExternal: Symbol.for(
+    'CollaboratorUpdateNotificationExternal',
+  ),
+  ListOrdersForCollabHttp: Symbol.for('ListOrdersForCollabHttp'),
+  UpdateOrderElevateHttp: Symbol.for('UpdateOrderElevateHttp'),
+  MenusRepository: Symbol.for('MenusRepository'),
+  ContractRepository: Symbol.for('ContractRepository'),
+  ItemRepository: Symbol.for('ItemRepository'),
+  ListOrdersForBusiness: Symbol.for('ListOrdersForBusiness'),
+  CollaboratorsRepository: Symbol.for('CollaboratorsRepository'),
+  EpisodeRepository: Symbol.for('EpisodeRepository'),
+  CreateOrderHttp: Symbol.for('CreateOrderHttp'),
+  PublishOrderCreationExternal: Symbol.for('PublishOrderCreationExternal'),
+  ChangeOrderItemStatusHttp: Symbol.for('ChangeOrderItemStatusHttp'),
+  ChangeOrderItemsStatusHttp: Symbol.for('ChangeOrderItemsStatusHttp'),
+}

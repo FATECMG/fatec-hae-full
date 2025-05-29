@@ -1,0 +1,1 @@
+data class SchoolId(val value: UUID = UUID.randomUUID())

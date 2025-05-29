@@ -1,0 +1,1267 @@
+openapi: 3.0.0
+info:
+  title: FATEC-HAE API
+  version: 0.0.1
+  description: API para informatizar editais HAE e alocações do horário disponível
+
+servers:
+  - url: https://nbw66pu8q7.execute-api.sa-east-1.amazonaws.com/dev
+
+tags:
+    - name: school
+      description: School endpoints
+    - name: course
+      description: Course endpoints
+    - name: role
+      description: Role endpoints
+    - name: user
+      description: User endpoints
+    - name: project
+      description: Project endpoints
+    - name: notice
+      description: Notice endpoints    
+
+paths:
+  /schools:
+    get:
+      tags:
+        - school
+      summary: Retorna todas as escolas
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SchoolPM'
+    post:
+      tags:
+        - school
+      summary: Cria uma nova escola
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SchoolDTO'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchoolPM'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+  /schools/{id}:
+    get:
+      tags:
+        - school
+      summary: Retorna uma escola
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID da escola a ser buscada
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchoolPM'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+    put:
+      tags:
+        - school
+      summary: Atualiza uma escola
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID da escola a ser atualizada
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SchoolDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchoolPM'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+    delete:
+      tags:
+        - school
+      summary: Deleta uma escola
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID da escola a ser deletada
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+
+  /schools/{id}/activate:
+    patch: 
+      tags:
+        - school
+      summary: Ativa uma escola
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID da escola a ser ativada
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Ativado com sucesso
+        '400':
+          description: Não foi possível ativar, tente novamente mais tarde!
+        '500': 
+          description: Erro Inesperado!
+
+  /schools/{id}/deactivate:
+    patch: 
+      tags:
+        - school
+      summary: Desativa uma escola
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID da escola a ser desativada
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Desativado com sucesso
+        '400':
+          description: Não foi possível desativar, tente novamente mais tarde!
+        '500': 
+          description: Erro Inesperado!        
+
+  /courses:
+    get:
+      tags:
+        - course
+      summary: Retorna todos os cursos
+      description: Retorna um array de objetos de Cursos.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CoursePM'
+    post:
+      tags:
+       - course
+      summary: Cria um novo curso
+      description: Cria um novo curso e retorna o objeto criado.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseDTO'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoursePM'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+  /courses/{id}:
+    get:
+      tags:
+        - course
+      summary: Retorna um curso
+      description: Retorna um curso com o ID especificado caso encontrado.
+                   Caso contrário retorna 404.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do curso a ser buscado
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoursePM'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+    put:
+      tags:
+        - course
+      summary: Atualiza um curso
+      description: Atualiza um curso existente e retorna o objeto
+                   atualizado e retorna o código HTTP dependendo do
+                   resultado da solicitação.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do curso a ser atualizado
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoursePM'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+    delete:
+      tags:
+        - course
+      summary: Deleta um curso
+      description: Deleta um curso existente e retorna
+                   apenas o codigo HTTP de confirmação.
+      parameters:
+          - in: path
+            name: id
+            required: true
+            description: ID do curso a ser deletado
+            schema:
+              type: string
+              format: uuid
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+
+  /courses/{id}/activate:
+    patch:
+      tags:
+        - course
+      summary: Ativa um curso
+      description: Ativa um curso existente e retorna o objeto
+                   atualizado e retorna o código HTTP dependendo do
+                   resultado da solicitação.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do curso a ser ativado
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Ativado com sucesso
+        '400':
+          description: Não foi possível ativar, tente novamente mais tarde!
+        '500': 
+          description: Erro Inesperado!
+
+  /courses/{id}/deactivate:
+    patch:
+      tags:
+        - course
+      summary: Desativa um curso
+      description: Desativa um curso existente e retorna o objeto
+                   atualizado e retorna o código HTTP dependendo do
+                   resultado da solicitação.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do curso a ser desativado
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Desativado com sucesso
+        '400':
+          description: Não foi possível desativar, tente novamente mais tarde!
+        '500': 
+          description: Erro Inesperado!
+
+  /roles:
+    get:
+      tags:
+        - role
+      summary: Retorna todos os cargos
+      description: Retorna um array de objetos de cargos.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolePM'
+  /users:
+    get:
+      tags:
+        - user
+      summary: Retorna todos os usuários
+      responses:
+        '200':
+          description: Array de usuários retornado com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserPM'
+    post:
+      tags:
+        - user
+      summary: Cria um novo usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+      responses:
+        '201':
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPM'
+        '400':
+          description: Erro de validação
+
+  /users/{id}:
+    get:
+      tags:
+        - user
+      summary: Retorna um usuário
+      parameters:
+        - name: id
+          in: path
+          description: ID do usuário a ser retornado
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuário retornado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPM'
+        '404':
+          description: Usuário não encontrado
+
+    delete:
+      tags:
+        - user
+      summary: Deleta um usuário
+      parameters:
+        - name: id
+          in: path
+          description: ID do usuário a ser deletado
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Usuário deletado com sucesso
+        '400':
+          description: Erro ao deletar o usuário
+
+    put:
+      tags:
+        - user
+      summary: Atualiza um usuário
+      parameters:
+        - name: id
+          in: path
+          description: ID do usuário a ser atualizado
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+      responses:
+        '200':
+          description: Usuário atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPM'
+        '400':
+          description: Erro de validação ou falha na atualização
+
+  /users/{id}/activate:
+    patch:
+      tags:
+        - user
+      summary: Ativa um usuário
+      parameters:
+        - name: id
+          in: path
+          description: ID do usuário a ser ativado
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Ativado com sucesso
+        '400':
+          description: Não foi possível ativar, tente novamente mais tarde!
+        '500': 
+          description: Erro Inesperado! 
+
+  /users/{id}/deactivate:
+    patch:
+      tags:
+        - user
+      summary: Desativa um usuário
+      parameters:
+        - name: id
+          in: path
+          description: ID do usuário a ser desativado
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Desativado com sucesso
+        '400':
+          description: Não foi possível desativar, tente novamente mais tarde!
+        '500': 
+          description: Erro Inesperado!
+  /users/name:
+    get:
+      tags:
+        - user
+      summary: Retorna o nome e o id de todos usuários
+      parameters:
+        - name: active
+          in: query
+          description: Filtra os usuários por ativos ou inativos
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuários retornado com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#/components/schemas/UserNameAndIdPM'                 
+
+  /projects:
+    get:
+      tags:
+        - project
+      summary: Retorna todos os projetos
+      responses:
+        '200':
+          description: Array de projetos retornado com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectPM'
+    post:
+      tags:
+        - project
+      summary: Cria um novo projeto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectDTO'
+      responses:
+        '201':
+          description: Projeto criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectPM'
+        '400':
+          description: Erro de validação
+
+  /projects/{id}:
+    get:
+      tags:
+        - project
+      summary: Retorna um projeto
+      parameters:
+        - name: id
+          in: path
+          description: ID do projeto a ser retornado
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Projeto retornado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectPM'
+        '404':
+          description: Projeto não encontrado
+
+    put:
+      tags:
+        - project
+      summary: Atualiza um projeto
+      parameters:
+        - name: id
+          in: path
+          description: ID do projeto a ser atualizado
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectDTO'
+      responses:
+        '200':
+          description: Projeto atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectPM'
+        '404':
+          description: Projeto não encontrado        
+        '400':
+          description: Erro de validação ou falha na atualização
+
+
+    delete:
+      tags:
+        - project
+      summary: Deleta um projeto
+      parameters:
+        - name: id
+          in: path
+          description: ID do projeto a ser deletado
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Projeto deletado com sucesso
+        '404':
+          description: Projeto não encontrado  
+        '400':
+          description: Erro ao deletar o projeto
+
+  /projects/{id}/activate:
+    patch:
+      tags:
+        - project
+      summary: Ativa um projeto
+      parameters:
+        - name: id
+          in: path
+          description: ID do projeto a ser ativado
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Ativado com sucesso
+        '400':
+          description: Não foi possível ativar, tente novamente mais tarde!
+        '500': 
+          description: Erro Inesperado!
+
+  /projects/{id}/deactivate:
+    patch:
+      tags:
+        - project
+      summary: Desativa um projeto
+      parameters:
+        - name: id
+          in: path
+          description: ID do projeto a ser desativado
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Desativado com sucesso
+        '400':
+          description: Não foi possível desativar, tente novamente mais tarde!
+        '500': 
+          description: Erro Inesperado!                                             
+  
+  /notice:
+    get:
+      tags:
+        - notice
+      summary: Retorna todas os editais
+      responses:
+        '200':
+          description: Array de editais retornado com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NoticePM'
+    post:
+      tags:
+        - notice
+      summary: Cria um novo Edital
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoticeDTO'
+      responses:
+        '201':
+          description: Edital criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoticePM'
+        '400':
+          description: Erro de validação
+        '500': 
+          description: Erro Inesperado!  
+
+  /notice/{id}:
+    get:
+      tags:
+        - notice
+      summary: Retorna um edital
+      parameters:
+        - name: id
+          in: path
+          description: ID do edital a ser retornado
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Edital retornado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoticePM'
+        '404':
+          description: Edital não encontrado
+
+    put:
+      tags:
+        - notice
+      summary: Atualiza um edital
+      parameters:
+        - name: id
+          in: path
+          description: ID do edital a ser atualizado
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoticeDTO'
+      responses:
+        '200':
+          description: Edital atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoticePM'
+        '404':
+          description: Edital não encontrado        
+        '400':
+          description: Erro de validação
+        '500': 
+          description: Erro Inesperado!  
+
+    delete:
+      tags:
+        - notice
+      summary: Deleta um edital
+      parameters:
+        - name: id
+          in: path
+          description: ID do edital a ser deletado
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Edital deletado com sucesso
+        '400':
+          description: Não foi possível excluir, tente novamente mais tarde!
+        '500': 
+          description: Erro Inesperado!
+
+  /notice/{id}/activate:
+    patch:
+      tags:
+        - notice
+      summary: Ativa um edital
+      parameters:
+        - name: id
+          in: path
+          description: ID do edital a ser ativado
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Ativado com sucesso
+        '400':
+          description: Não foi possível ativar, tente novamente mais tarde!
+        '500': 
+          description: Erro Inesperado!
+
+  /notice/{id}/deactivate:
+    patch:
+      tags:
+        - notice
+      summary: Desativa um edital
+      parameters:
+        - name: id
+          in: path
+          description: ID do edital a ser desativado
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Excluido com sucesso
+        '400':
+          description: Não foi possível excluir, tente novamente mais tarde!
+        '500': 
+          description: Erro Inesperado!
+
+  /notices/{id}/topics:
+    get:
+      tags:
+        - notice
+      summary: Retorna todos os tópicos de um edital
+      parameters:
+        - name: id
+          in: path
+          description: ID do edital
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Array de Tópicos do Edital retornado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoticeTopicsOfInterestPM'
+        '404':
+          description: Edital não encontrado     
+
+  /notices/title:
+    get:
+      tags:
+        - notice
+      summary: Retorna todos os editais com o título informado e id
+      parameters:
+        - name: active
+          in: query
+          description: Filtra os editais ativos ou inativos
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Array de editais retornado com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NoticeTitleAndIdPM'                         
+
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        postCode:
+          type: string
+        street:
+          type: string
+        number:
+          type: string
+        complement:
+          type: string
+        city:
+          type: string
+        district:
+          type: string
+        state:
+          type: string
+      required:
+        - postCode
+        - street
+        - city
+        - district
+        - number
+        - state
+      additionalProperties: false
+    SchoolDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        active:
+          type: boolean
+      required:
+        - name
+        - address
+      additionalProperties: false
+    SchoolPM:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        active:
+          type: boolean
+      required:
+        - name
+        - address
+        - id
+        - active
+      additionalProperties: false
+    CourseDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        active:
+            type: boolean
+        coordinator:
+          type: string
+        acronym:
+          type: string
+        code:
+          type: string
+        schedule:
+          type: array
+          items:
+              type: string
+              enum: ["Matutino", "Vespertino", "Noturno"]
+      required:
+        - name
+        - coordinator
+        - acronym
+        - code
+        - schedule
+      additionalProperties: false
+    CoursePM:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        active:
+            type: boolean
+        name:
+          type: string
+        coordinator:
+          type: string
+        acronym:
+          type: string
+        code:
+          type: string
+        schedule:
+          type: array
+          items:
+            type: string
+            enum: [ "Matutino", "Vespertino", "Noturno" ]
+      required:
+        - id
+        - name
+        - coordinator
+        - active
+        - acronym
+        - code
+        - schedule
+      additionalProperties: false
+    RolePM:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        active:
+           type: boolean
+      required:
+        - id
+        - name
+        - active
+      additionalProperties: false
+    ErrorBody:
+      type: object
+      properties:
+        body:
+          type: string
+      additionalProperties: false
+    UserPM:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        active:
+          type: boolean
+        email:
+          type: string
+        phone:
+          type: string
+        role:
+          type: string
+        registerNumber:
+          type: string
+        academicTitle:
+          type: string
+    UserDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        active:
+          type: boolean
+        email:
+          type: string
+        phone:
+          type: string
+        role:
+          type: string
+        registerNumber:
+          type: string
+        academicTitle:
+          type: string
+        password:
+          type: string
+      required:
+        - name
+        - password
+        - email
+        - phone
+        - role
+        - registerNumber
+        - academicTitle
+    UserNameAndIdPM:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string    
+    ProjectDTO:
+      type: object
+      properties:
+        author:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+        title: 
+          type: string
+        description:
+          type: string
+        objectives:
+          type: string
+        methodology:
+          type: string
+        justification:
+          type: string
+        topicOfInterest:
+          type: string  
+        schedule:
+          type: object
+          properties:
+            activities:
+              type: array
+              items:
+                $ref: '#/components/schemas/Activity'
+        hours:
+          type: object
+          properties:
+            proposed:
+              type: string
+        compilanceModel:
+          type: string
+      required:
+        - title
+        - description
+        - objectives
+        - methodology
+        - justification
+        - topicOfInterest
+        - schedule
+        - hours
+        - compilanceModel
+      additionalProperties: false  
+    ProjectPM:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        author:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string  
+        title: 
+          type: string
+        description:
+          type: string
+        objectives:
+          type: string
+        methodology:
+          type: string
+        justification:
+          type: string
+        topicOfInterest:
+          type: string  
+        schedule:
+          type: object
+          properties:
+            activities:
+              type: array
+              items:
+                $ref: '#/components/schemas/SchedulePM' 
+        hours:
+          type: object
+          properties:
+            proposed:
+              type: string
+        compilanceModel:
+          type: string
+        status:
+          type: string
+        active:
+          type: boolean    
+      required:
+        - title
+        - description
+        - objectives
+        - methodology
+        - justification
+        - topicOfInterest
+        - schedule
+        - hours
+        - compilanceModel
+        - status
+        - active
+        - id
+      additionalProperties: false                      
+    Activity:
+      type: object
+      properties:
+        name:
+          type: string
+        date:
+          type: string
+          format: date
+    SchedulePM:
+      type: object
+      properties:
+        activities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Activity'
+        totalActivities:
+          type: string
+    NoticeDTO:
+      type: object
+      properties:
+        title:
+          type: string
+        topicOfInterest:
+          type: array
+          items:
+            type: string  
+        description:
+          type: string
+        openDate:
+          type: string
+        closeDate:
+          type: string  
+        semester:
+          type: string
+        year:
+          type: string    
+        active:
+          type: boolean
+      required:
+        - title
+        - description
+        - topicOfInterest
+        - openDate
+        - closeDate
+        - year
+        - semester
+        - active
+      additionalProperties: false
+    NoticePM:
+      type: object
+      properties:
+        title:
+          type: string
+        topicOfInterest:
+          type: array
+          items:
+            type: string  
+        description:
+          type: string
+        openDate:
+          type: string
+        closeDate:
+          type: string  
+        semester:
+          type: string
+        year:
+          type: string    
+        active:
+          type: boolean
+      required:
+        - title
+        - description
+        - topicOfInterest
+        - openDate
+        - closeDate
+        - year
+        - semester
+        - active
+      additionalProperties: false
+    NoticeTopicsOfInterestPM:
+      type: object
+      properties:
+        topicOfInterest:
+          type: array
+          items:
+            type: string
+      required:
+        - topicOfInterest
+      additionalProperties: false                                     
+    NoticeTitleAndIdPM:
+      type: object
+      properties:
+        title:
+          type: string
+        id:
+          type: string
+      required:
+        - title
+        - id
+      additionalProperties: false                             
+    ValidationError:
+      type: object
+      properties:
+        body:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+

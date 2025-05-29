@@ -1,0 +1,18 @@
+export const Locator = {
+  SubscriptionUseCase: Symbol.for('SubscriptionUseCase'),
+  CreateSubscriptionExternal: Symbol.for('CreateSubscriptionExternal'),
+  CreateSubscriptionHttp: Symbol.for('CreateSubscriptionHttp'),
+  BusinessRepository: Symbol.for('BusinessRepository'),
+  PlanRepository: Symbol.for('PlanRepository'),
+  DisableContractExternal: Symbol.for('DisableContractExternal'),
+  ManageSubscriptionPaymentHttp: Symbol.for('ManageSubscriptionPaymentHttp'),
+  ContractRepository: Symbol.for('ContractRepository'),
+  GetSubscriptionExternal: Symbol.for('GetSubscriptionExternal'),
+  UpgradeSubscriptionHttp: Symbol.for('UpgradeSubscriptionHttp'),
+  CancelSubscriptionExternal: Symbol.for('CancelSubscriptionExternal'),
+  ListChargesExternal: Symbol.for('ListChargesExternal'),
+  ListSubscriptionChargesHttp: Symbol.for('ListSubscriptionChargesHttp'),
+  ChangeSubscriptionCardExternal: Symbol.for('ChangeSubscriptionCardExternal'),
+  ChangeSubscriptionCardHttp: Symbol.for('ChangeSubscriptionCardHttp'),
+  GetSubscriptionHttp: Symbol.for('GetSubscriptionHttp'),
+}

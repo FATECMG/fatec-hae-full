@@ -1,0 +1,30 @@
+const Locator = {
+  BusinessRepository: Symbol.for('BusinessRepository'),
+  CreateUseCase: Symbol.for('CreateUseCase'),
+  CreateController: Symbol.for('CreateController'),
+  CreateDigitalAccountExternal: Symbol('CreateDigitalAccountExternal'),
+  CreateFirebaseAccountExternal: Symbol('CreateFirebaseAccountExternal'),
+  GetDigitalAccountPublicKeyExternal: Symbol(
+    'GetDigitalAccountPublicKeyExternal',
+  ),
+  GetMissingDocumentsExternal: Symbol('GetMissingDocumentsExternal'),
+  ComposeAddressPlaceIdExternal: Symbol('ComposeAddressPlaceIdExternal'),
+  ListBankExternal: Symbol('ListBankExternal'),
+  ListBankUseCase: Symbol('ListBankUseCase'),
+  ListBankController: Symbol('ListBankController'),
+  CreateEpisodeExternal: Symbol.for('CreateEpisodeExternal'),
+  CreateContractExternal: Symbol.for('CreateContractExternal'),
+  BusinessUseCase: Symbol.for('BusinessUseCase'),
+  ListBusinessesHttp: Symbol.for('ListBusinessesHttp'),
+  GetBusinessHttps: Symbol.for('GetBusinessHttps'),
+  SendWelcomeEmailExternal: Symbol.for('SendWelcomeEmailExternal'),
+  CheckBusinessCPFHttp: Symbol.for('CheckBusinessCPFHttp'),
+  CheckBusinessEmailHttp: Symbol.for('CheckBusinessEmailHttp'),
+  GenerateCreditCardExternal: Symbol.for('GenerateCreditCardExternal'),
+  CreditCardUseCase: Symbol.for('CreditCardUseCase'),
+  CreditCardController: Symbol.for('CreditCardController'),
+  ListFeaturesHttp: Symbol.for('ListFeaturesHttp'),
+  CreateBusinessJiraCardExternal: Symbol.for('CreateBusinessJiraCardExternal'),
+}
+
+export { Locator }

@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./BackendFaaSTS
+      dockerfile: Dockerfile
+    x-develop:
+      watch:
+        - action: rebuild
+          path: ./BackendFaaSTS/src
+          target: \app\src
+    env_file:
+      - BackendFaaSTS/.env.development      
+    ports:
+      - '3000:3000'
+
+  frontend:
+    build:
+      context: ./FrontendReactTS
+      dockerfile: Dockerfile
+    x-develop:
+      watch:
+        - action: sync
+          path: ./FrontendReactTS/src
+          target: \app\src
+          ignore: 
+            - node_modules
+        - action: rebuild
+          path: ./FrontendReactTS/package.json
+    ports:
+      - '5173:5173'
+    env_file:
+      - FrontendReactTS/.env.development
+    depends_on:
+      - backend
